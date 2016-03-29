@@ -6,10 +6,6 @@ from numpy.testing import assert_allclose
 from src.dnls import dnls_rhs, fibonacci
 
 
-# class TestCentralAmplitude(unittest.TestCase):
-
-#     def test_time_zero(self):
-
 class TestDnlsRhs(unittest.TestCase):
 
     def test_dimension(self):
@@ -21,7 +17,18 @@ class TestDnlsRhs(unittest.TestCase):
 
         assert actual == expected
 
-    # def test_values(self):
+    def test_values_periodic_uniform(self):
+        M = 6
+        L = 2.3
+        f = dnls_rhs(M, L)
+
+        actual = f(2.3, np.ones(shape=(M,)))
+        expected = (-1j*L + 1j)*np.ones(shape=(M,))
+        expected[0] = -1j*L + 0.5j
+        expected[M-1] = -1j*L + 0.5j
+
+        assert_allclose(actual, expected)
+
 
 class TestFibonacci(unittest.TestCase):
 
