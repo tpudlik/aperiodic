@@ -3,9 +3,26 @@ from scipy.integrate import complex_ode
 
 
 def central_amplitude(time, L, M=101, aperiodicity=0):
-    """Return the amplitude at the central site of the M-site lattice at the
+    r"""Return the amplitude at the central site of the M-site lattice at the
     given time.  The initial condition is amplitude 1 at the central site,
     zero at all other sites.
+
+    Parameters
+    ----------
+    time : float
+        End time of the integration.
+    L : float
+        Nonlinearity parameter.
+    M : int
+        Number of lattice sites. (Default 101.)
+    aperiodicity : float
+        Aperiodicity parameter, defined in terms of the hoppings as (b/a - 1).
+        (Default 0, which corresponds to a periodic chain.)
+
+    Returns
+    -------
+    y : float
+        Amplitude at the central site, $|\psi_{M/2}|$.
 
     """
     integrator = complex_ode(dnls_rhs(M, L, aperiodicity))
@@ -58,14 +75,28 @@ def fibonacci_hoppings(length, p):
 
 
 def ab_values(length, p):
-    """Return the lengths of the hoppings for the fibonacci chain, chosen so
-    that the mean hopping approaches 1 as length increases, with `b`
+    """Return the lengths (strengths) of the hoppings for the fibonacci chain,
+    chosen so that the mean hopping approaches 1 as length increases, with `b`
     lengthening and `a` shortening monotonically.
+
+    Parameters
+    ----------
+    length : int
+        Number of sites in the chain.
+    p : float
+        Aperiodicity parameter (b/a - 1).
+
+    Returns
+    -------
+    (a, b) : tuple of floats
+        Lengths of the `a` and `b`.
 
     """
     # TODO: Is it possible to choose a and b values to set the mean exactly to
     #       1 for every choice of length and p, while preserving the
-    #       monotonicity of a and b with p?
+    #       monotonicity of a and b with p?  This would probably require
+    #       a and b to depend on the length as well as p, which is why length
+    #       is included in the function signature.
     golden_ratio = (1 + np.sqrt(5))/2
     a = 1/(1 + (2 - golden_ratio)*p)
     b = a*(1 + p)

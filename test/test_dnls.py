@@ -14,9 +14,9 @@ class TestDnlsRhs(unittest.TestCase):
 
     def test_dimension(self):
         M = 6
-        f = dnls_rhs(M)
+        f = dnls_rhs(M, 1.23)
 
-        actual = f(0.4, np.arange(M), 3).shape
+        actual = f(0.4, np.arange(M)).shape
         expected = (M,)
 
         assert actual == expected
